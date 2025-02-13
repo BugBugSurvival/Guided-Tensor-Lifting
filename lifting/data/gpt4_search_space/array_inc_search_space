@@ -1,0 +1,10 @@
+arr(i) = arr(i) + 1
+arr(i) = arr(i) + b
+A(i) = B(i) + Cons
+arr(i) = arr(i) + 1
+arr(i) = arr(i) + 1
+arr(i) = arr(i) + 1
+arr(i) = arr(i) + 1
+arr(i) = arr(i) + 1
+arr(i) = arr(i) + 1
+A(i) = A(i) + 1

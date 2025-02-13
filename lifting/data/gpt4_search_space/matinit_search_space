@@ -1,0 +1,10 @@
+mat(i,j) = val
+mat(i, j) = val
+mat(i,j) = val
+A(i,j) = val
+mat(i, j) = val
+mat(i, j) = val
+A(i,j) = B
+mat(i, j) = val
+mat(i,j) = val
+mat(i,j) = val

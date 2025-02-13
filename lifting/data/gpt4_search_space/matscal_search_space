@@ -1,0 +1,10 @@
+B(i,j) = A(i,j) * val
+A(i,j) = A(i,j) * s
+A(i,j) = B(i,j) * val
+B(i,j) = A(i,j) * val
+mat(i, j) = mat(i, j) * val
+A(i,j) = A(i,j) * v
+output(i,j) = input(i,j) * val
+B(i,j) = A(i,j) * c
+mat(i,j) = mat(i,j) * val
+A(i,j) = A(i,j) * val

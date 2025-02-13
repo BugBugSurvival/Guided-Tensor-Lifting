@@ -1,0 +1,10 @@
+a(i) = a(i) * s
+a(i) = s * a(i)
+a(i) = a(i) * s
+a(i) = a(i) * s
+a(i) = a(i) * s
+a(i) = s*a(i)
+a(i) = s * a(i)
+a(i) = a(i) * s
+a(i) = a(i) * s
+a(i) = s * a(i)

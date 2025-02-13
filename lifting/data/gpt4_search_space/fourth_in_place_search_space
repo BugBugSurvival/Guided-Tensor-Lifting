@@ -1,0 +1,6 @@
+arr(i) = arr(i) * arr(i) * arr(i) * arr(i)
+A[i] = A[i]*A[i]*A[i]*A[i]
+A(i) = A(i) * A(i) * A(i) * A(i)
+B[i] = A[i] * A[i] * A[i] * A[i]
+arr(i) = arr(i) * arr(i) * arr(i) * arr(i)
+arr(i) = arr(i) * arr(i) * arr(i) * arr(i)

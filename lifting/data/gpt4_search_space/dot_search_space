@@ -1,0 +1,10 @@
+a(i)*b(i)
+a(i) * b(i) => sum()
+a(i)*b(i)=>sum
+sum(i) := a(i) * b(i)
+A(i) * B(i)
+a(i)*b(i)
+c(i) = a(i) * b(i)
+a(i) * b(i) -> c()
+a(i) * b(i)
+a(i) * b(i) -> c()

@@ -1,0 +1,46 @@
+diff --git a/mlir/lib/Target/Cpp/TranslateToCpp.cpp b/mlir/lib/Target/Cpp/TranslateToCpp.cpp
+index 66377f92eb88..260db4711817 100644
+--- a/mlir/lib/Target/Cpp/TranslateToCpp.cpp
++++ b/mlir/lib/Target/Cpp/TranslateToCpp.cpp
+@@ -261,6 +261,19 @@ static LogicalResult printBinaryArithOperation(CppEmitter &emitter,
+   return success();
+ }
+ 
++static LogicalResult printUnaryArithOperation(CppEmitter &emitter,
++                                               Operation *operation,
++                                               StringRef unaryArithOperator) {
++  raw_ostream &os = emitter.ostream();
++
++  if (failed(emitter.emitAssignPrefix(*operation)))
++    return failure();
++  os << " " << unaryArithOperator;
++  os << emitter.getOrCreateName(operation->getOperand(0));
++
++  return success();
++}
++
+ static LogicalResult printOperation(CppEmitter &emitter, emitc::AddOp addOp) {
+   Operation *operation = addOp.getOperation();
+ 
+@@ -297,6 +310,12 @@ static LogicalResult printOperation(CppEmitter &emitter, arith::RemSIOp remsiOp)
+   return printBinaryArithOperation(emitter, operation, "%");
+ }
+ 
++static LogicalResult printOperation(CppEmitter &emitter, arith::NegFOp negfOp) {
++  Operation *operation = negfOp.getOperation();
++
++  return printUnaryArithOperation(emitter, operation, "-");
++}
++
+ static LogicalResult printOperation(CppEmitter &emitter, arith::AddFOp addfOp) {
+   Operation *operation = addfOp.getOperation();
+ 
+@@ -1204,6 +1223,8 @@ LogicalResult CppEmitter::emitOperation(Operation &op, bool trailingSemicolon) {
+               [&](auto op) { return printOperation(*this, op); })
+           .Case<arith::SelectOp>(
+               [&](auto op) { return printOperation(*this, op); })
++          .Case<arith::NegFOp>(
++              [&](auto op) { return printOperation(*this, op); })
+ 
+           // Memref ops.
+           .Case<memref::AllocOp, memref::AllocaOp>(

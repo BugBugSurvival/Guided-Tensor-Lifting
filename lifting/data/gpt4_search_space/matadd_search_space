@@ -1,0 +1,10 @@
+A(i,j) = B(i,j) + C(i,j)
+A(i,j) = B(i,j) + C(i,j)
+A(i,j) = B(i,j) + C(i,j)
+A(i,j) = B(i,j) + C(i,j)
+A(i, j) = B(i, j) + C(i, j)
+C[i, j] = A[i, j] + B[i, j]
+A(i,j) = B(i,j) + C(i,j)
+A(i,j) = B(i,j) + C(i,j)
+C[i, j] = A[i, j] + B[i, j]
+C(i,j) = A(i,j) + B(i,j)

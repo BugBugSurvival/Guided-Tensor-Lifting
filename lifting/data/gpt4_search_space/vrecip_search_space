@@ -1,0 +1,4 @@
+arr = 1 / arr
+arr(i) = 1 / arr(i)
+r(i) = 1 / v(i)
+

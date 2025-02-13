@@ -1,0 +1,3 @@
+block(i,j)=sum(k, cos1(i,k)*temp2d(k,j))
+temp2d(i,j)=sum(k, block(i,k)*cos2(k,j))
+block(i, j) = cos1(i, k) * (block(i, m) * cos2(m, j))

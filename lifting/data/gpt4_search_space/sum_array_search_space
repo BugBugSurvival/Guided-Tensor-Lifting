@@ -1,0 +1,10 @@
+sum(i): a(i)
+sum(a(i))
+a(i) = a(i) + sum
+sum(A(i))
+sum(i) : a(i)
+a(i) = a(i) + a(i)
+output(i) = input(i)
+sum(i) := a(i)
+sum(i) := a(i)
+sum(i) A(i)

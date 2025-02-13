@@ -1,0 +1,544 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> tensor EQUAL expr
+Rule 2     tensor -> ID LPAREN index_expr RPAREN
+Rule 3     tensor -> ID
+Rule 4     uminusTensor -> MINUS tensor
+Rule 5     expr -> MINUS expr
+Rule 6     index_expr -> index_tensor
+Rule 7     index_expr -> index_tensor COMMA index_expr
+Rule 8     index_tensor -> ID
+Rule 9     expr -> expr PLUS expr
+Rule 10    expr -> expr MINUS expr
+Rule 11    expr -> expr TIMES expr
+Rule 12    expr -> expr DIVIDE expr
+Rule 13    expr -> LPAREN expr RPAREN
+Rule 14    expr -> CONSTANT
+Rule 15    expr -> tensor
+Rule 16    expr -> uminusTensor
+
+Terminals, with rules where they appear
+
+COMMA                : 7
+CONSTANT             : 14
+DIVIDE               : 12
+EQUAL                : 1
+ID                   : 2 3 8
+LPAREN               : 2 13
+MINUS                : 4 5 10
+PLUS                 : 9
+RPAREN               : 2 13
+TIMES                : 11
+error                : 
+
+Nonterminals, with rules where they appear
+
+expr                 : 1 5 9 9 10 10 11 11 12 12 13
+index_expr           : 2 7
+index_tensor         : 6 7
+program              : 0
+tensor               : 1 4 15
+uminusTensor         : 16
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . tensor EQUAL expr
+    (2) tensor -> . ID LPAREN index_expr RPAREN
+    (3) tensor -> . ID
+
+    ID              shift and go to state 3
+
+    program                        shift and go to state 1
+    tensor                         shift and go to state 2
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> tensor . EQUAL expr
+
+    EQUAL           shift and go to state 4
+
+
+state 3
+
+    (2) tensor -> ID . LPAREN index_expr RPAREN
+    (3) tensor -> ID .
+
+    LPAREN          shift and go to state 5
+    EQUAL           reduce using rule 3 (tensor -> ID .)
+    PLUS            reduce using rule 3 (tensor -> ID .)
+    MINUS           reduce using rule 3 (tensor -> ID .)
+    TIMES           reduce using rule 3 (tensor -> ID .)
+    DIVIDE          reduce using rule 3 (tensor -> ID .)
+    $end            reduce using rule 3 (tensor -> ID .)
+    RPAREN          reduce using rule 3 (tensor -> ID .)
+
+
+state 4
+
+    (1) program -> tensor EQUAL . expr
+    (5) expr -> . MINUS expr
+    (9) expr -> . expr PLUS expr
+    (10) expr -> . expr MINUS expr
+    (11) expr -> . expr TIMES expr
+    (12) expr -> . expr DIVIDE expr
+    (13) expr -> . LPAREN expr RPAREN
+    (14) expr -> . CONSTANT
+    (15) expr -> . tensor
+    (16) expr -> . uminusTensor
+    (2) tensor -> . ID LPAREN index_expr RPAREN
+    (3) tensor -> . ID
+    (4) uminusTensor -> . MINUS tensor
+
+    MINUS           shift and go to state 8
+    LPAREN          shift and go to state 9
+    CONSTANT        shift and go to state 10
+    ID              shift and go to state 3
+
+    tensor                         shift and go to state 6
+    expr                           shift and go to state 7
+    uminusTensor                   shift and go to state 11
+
+state 5
+
+    (2) tensor -> ID LPAREN . index_expr RPAREN
+    (6) index_expr -> . index_tensor
+    (7) index_expr -> . index_tensor COMMA index_expr
+    (8) index_tensor -> . ID
+
+    ID              shift and go to state 12
+
+    index_expr                     shift and go to state 13
+    index_tensor                   shift and go to state 14
+
+state 6
+
+    (15) expr -> tensor .
+
+    PLUS            reduce using rule 15 (expr -> tensor .)
+    MINUS           reduce using rule 15 (expr -> tensor .)
+    TIMES           reduce using rule 15 (expr -> tensor .)
+    DIVIDE          reduce using rule 15 (expr -> tensor .)
+    $end            reduce using rule 15 (expr -> tensor .)
+    RPAREN          reduce using rule 15 (expr -> tensor .)
+
+
+state 7
+
+    (1) program -> tensor EQUAL expr .
+    (9) expr -> expr . PLUS expr
+    (10) expr -> expr . MINUS expr
+    (11) expr -> expr . TIMES expr
+    (12) expr -> expr . DIVIDE expr
+
+    $end            reduce using rule 1 (program -> tensor EQUAL expr .)
+    PLUS            shift and go to state 15
+    MINUS           shift and go to state 16
+    TIMES           shift and go to state 17
+    DIVIDE          shift and go to state 18
+
+
+state 8
+
+    (5) expr -> MINUS . expr
+    (4) uminusTensor -> MINUS . tensor
+    (5) expr -> . MINUS expr
+    (9) expr -> . expr PLUS expr
+    (10) expr -> . expr MINUS expr
+    (11) expr -> . expr TIMES expr
+    (12) expr -> . expr DIVIDE expr
+    (13) expr -> . LPAREN expr RPAREN
+    (14) expr -> . CONSTANT
+    (15) expr -> . tensor
+    (16) expr -> . uminusTensor
+    (2) tensor -> . ID LPAREN index_expr RPAREN
+    (3) tensor -> . ID
+    (4) uminusTensor -> . MINUS tensor
+
+    MINUS           shift and go to state 8
+    LPAREN          shift and go to state 9
+    CONSTANT        shift and go to state 10
+    ID              shift and go to state 3
+
+    expr                           shift and go to state 19
+    tensor                         shift and go to state 20
+    uminusTensor                   shift and go to state 11
+
+state 9
+
+    (13) expr -> LPAREN . expr RPAREN
+    (5) expr -> . MINUS expr
+    (9) expr -> . expr PLUS expr
+    (10) expr -> . expr MINUS expr
+    (11) expr -> . expr TIMES expr
+    (12) expr -> . expr DIVIDE expr
+    (13) expr -> . LPAREN expr RPAREN
+    (14) expr -> . CONSTANT
+    (15) expr -> . tensor
+    (16) expr -> . uminusTensor
+    (2) tensor -> . ID LPAREN index_expr RPAREN
+    (3) tensor -> . ID
+    (4) uminusTensor -> . MINUS tensor
+
+    MINUS           shift and go to state 8
+    LPAREN          shift and go to state 9
+    CONSTANT        shift and go to state 10
+    ID              shift and go to state 3
+
+    expr                           shift and go to state 21
+    tensor                         shift and go to state 6
+    uminusTensor                   shift and go to state 11
+
+state 10
+
+    (14) expr -> CONSTANT .
+
+    PLUS            reduce using rule 14 (expr -> CONSTANT .)
+    MINUS           reduce using rule 14 (expr -> CONSTANT .)
+    TIMES           reduce using rule 14 (expr -> CONSTANT .)
+    DIVIDE          reduce using rule 14 (expr -> CONSTANT .)
+    $end            reduce using rule 14 (expr -> CONSTANT .)
+    RPAREN          reduce using rule 14 (expr -> CONSTANT .)
+
+
+state 11
+
+    (16) expr -> uminusTensor .
+
+    PLUS            reduce using rule 16 (expr -> uminusTensor .)
+    MINUS           reduce using rule 16 (expr -> uminusTensor .)
+    TIMES           reduce using rule 16 (expr -> uminusTensor .)
+    DIVIDE          reduce using rule 16 (expr -> uminusTensor .)
+    $end            reduce using rule 16 (expr -> uminusTensor .)
+    RPAREN          reduce using rule 16 (expr -> uminusTensor .)
+
+
+state 12
+
+    (8) index_tensor -> ID .
+
+    COMMA           reduce using rule 8 (index_tensor -> ID .)
+    RPAREN          reduce using rule 8 (index_tensor -> ID .)
+
+
+state 13
+
+    (2) tensor -> ID LPAREN index_expr . RPAREN
+
+    RPAREN          shift and go to state 22
+
+
+state 14
+
+    (6) index_expr -> index_tensor .
+    (7) index_expr -> index_tensor . COMMA index_expr
+
+    RPAREN          reduce using rule 6 (index_expr -> index_tensor .)
+    COMMA           shift and go to state 23
+
+
+state 15
+
+    (9) expr -> expr PLUS . expr
+    (5) expr -> . MINUS expr
+    (9) expr -> . expr PLUS expr
+    (10) expr -> . expr MINUS expr
+    (11) expr -> . expr TIMES expr
+    (12) expr -> . expr DIVIDE expr
+    (13) expr -> . LPAREN expr RPAREN
+    (14) expr -> . CONSTANT
+    (15) expr -> . tensor
+    (16) expr -> . uminusTensor
+    (2) tensor -> . ID LPAREN index_expr RPAREN
+    (3) tensor -> . ID
+    (4) uminusTensor -> . MINUS tensor
+
+    MINUS           shift and go to state 8
+    LPAREN          shift and go to state 9
+    CONSTANT        shift and go to state 10
+    ID              shift and go to state 3
+
+    expr                           shift and go to state 24
+    tensor                         shift and go to state 6
+    uminusTensor                   shift and go to state 11
+
+state 16
+
+    (10) expr -> expr MINUS . expr
+    (5) expr -> . MINUS expr
+    (9) expr -> . expr PLUS expr
+    (10) expr -> . expr MINUS expr
+    (11) expr -> . expr TIMES expr
+    (12) expr -> . expr DIVIDE expr
+    (13) expr -> . LPAREN expr RPAREN
+    (14) expr -> . CONSTANT
+    (15) expr -> . tensor
+    (16) expr -> . uminusTensor
+    (2) tensor -> . ID LPAREN index_expr RPAREN
+    (3) tensor -> . ID
+    (4) uminusTensor -> . MINUS tensor
+
+    MINUS           shift and go to state 8
+    LPAREN          shift and go to state 9
+    CONSTANT        shift and go to state 10
+    ID              shift and go to state 3
+
+    expr                           shift and go to state 25
+    tensor                         shift and go to state 6
+    uminusTensor                   shift and go to state 11
+
+state 17
+
+    (11) expr -> expr TIMES . expr
+    (5) expr -> . MINUS expr
+    (9) expr -> . expr PLUS expr
+    (10) expr -> . expr MINUS expr
+    (11) expr -> . expr TIMES expr
+    (12) expr -> . expr DIVIDE expr
+    (13) expr -> . LPAREN expr RPAREN
+    (14) expr -> . CONSTANT
+    (15) expr -> . tensor
+    (16) expr -> . uminusTensor
+    (2) tensor -> . ID LPAREN index_expr RPAREN
+    (3) tensor -> . ID
+    (4) uminusTensor -> . MINUS tensor
+
+    MINUS           shift and go to state 8
+    LPAREN          shift and go to state 9
+    CONSTANT        shift and go to state 10
+    ID              shift and go to state 3
+
+    expr                           shift and go to state 26
+    tensor                         shift and go to state 6
+    uminusTensor                   shift and go to state 11
+
+state 18
+
+    (12) expr -> expr DIVIDE . expr
+    (5) expr -> . MINUS expr
+    (9) expr -> . expr PLUS expr
+    (10) expr -> . expr MINUS expr
+    (11) expr -> . expr TIMES expr
+    (12) expr -> . expr DIVIDE expr
+    (13) expr -> . LPAREN expr RPAREN
+    (14) expr -> . CONSTANT
+    (15) expr -> . tensor
+    (16) expr -> . uminusTensor
+    (2) tensor -> . ID LPAREN index_expr RPAREN
+    (3) tensor -> . ID
+    (4) uminusTensor -> . MINUS tensor
+
+    MINUS           shift and go to state 8
+    LPAREN          shift and go to state 9
+    CONSTANT        shift and go to state 10
+    ID              shift and go to state 3
+
+    expr                           shift and go to state 27
+    tensor                         shift and go to state 6
+    uminusTensor                   shift and go to state 11
+
+state 19
+
+    (5) expr -> MINUS expr .
+    (9) expr -> expr . PLUS expr
+    (10) expr -> expr . MINUS expr
+    (11) expr -> expr . TIMES expr
+    (12) expr -> expr . DIVIDE expr
+
+    PLUS            reduce using rule 5 (expr -> MINUS expr .)
+    MINUS           reduce using rule 5 (expr -> MINUS expr .)
+    TIMES           reduce using rule 5 (expr -> MINUS expr .)
+    DIVIDE          reduce using rule 5 (expr -> MINUS expr .)
+    $end            reduce using rule 5 (expr -> MINUS expr .)
+    RPAREN          reduce using rule 5 (expr -> MINUS expr .)
+
+  ! PLUS            [ shift and go to state 15 ]
+  ! MINUS           [ shift and go to state 16 ]
+  ! TIMES           [ shift and go to state 17 ]
+  ! DIVIDE          [ shift and go to state 18 ]
+
+
+state 20
+
+    (4) uminusTensor -> MINUS tensor .
+    (15) expr -> tensor .
+
+  ! reduce/reduce conflict for PLUS resolved using rule 4 (uminusTensor -> MINUS tensor .)
+  ! reduce/reduce conflict for MINUS resolved using rule 4 (uminusTensor -> MINUS tensor .)
+  ! reduce/reduce conflict for TIMES resolved using rule 4 (uminusTensor -> MINUS tensor .)
+  ! reduce/reduce conflict for DIVIDE resolved using rule 4 (uminusTensor -> MINUS tensor .)
+  ! reduce/reduce conflict for $end resolved using rule 4 (uminusTensor -> MINUS tensor .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 4 (uminusTensor -> MINUS tensor .)
+    PLUS            reduce using rule 4 (uminusTensor -> MINUS tensor .)
+    MINUS           reduce using rule 4 (uminusTensor -> MINUS tensor .)
+    TIMES           reduce using rule 4 (uminusTensor -> MINUS tensor .)
+    DIVIDE          reduce using rule 4 (uminusTensor -> MINUS tensor .)
+    $end            reduce using rule 4 (uminusTensor -> MINUS tensor .)
+    RPAREN          reduce using rule 4 (uminusTensor -> MINUS tensor .)
+
+  ! PLUS            [ reduce using rule 15 (expr -> tensor .) ]
+  ! MINUS           [ reduce using rule 15 (expr -> tensor .) ]
+  ! TIMES           [ reduce using rule 15 (expr -> tensor .) ]
+  ! DIVIDE          [ reduce using rule 15 (expr -> tensor .) ]
+  ! $end            [ reduce using rule 15 (expr -> tensor .) ]
+  ! RPAREN          [ reduce using rule 15 (expr -> tensor .) ]
+
+
+state 21
+
+    (13) expr -> LPAREN expr . RPAREN
+    (9) expr -> expr . PLUS expr
+    (10) expr -> expr . MINUS expr
+    (11) expr -> expr . TIMES expr
+    (12) expr -> expr . DIVIDE expr
+
+    RPAREN          shift and go to state 28
+    PLUS            shift and go to state 15
+    MINUS           shift and go to state 16
+    TIMES           shift and go to state 17
+    DIVIDE          shift and go to state 18
+
+
+state 22
+
+    (2) tensor -> ID LPAREN index_expr RPAREN .
+
+    EQUAL           reduce using rule 2 (tensor -> ID LPAREN index_expr RPAREN .)
+    PLUS            reduce using rule 2 (tensor -> ID LPAREN index_expr RPAREN .)
+    MINUS           reduce using rule 2 (tensor -> ID LPAREN index_expr RPAREN .)
+    TIMES           reduce using rule 2 (tensor -> ID LPAREN index_expr RPAREN .)
+    DIVIDE          reduce using rule 2 (tensor -> ID LPAREN index_expr RPAREN .)
+    $end            reduce using rule 2 (tensor -> ID LPAREN index_expr RPAREN .)
+    RPAREN          reduce using rule 2 (tensor -> ID LPAREN index_expr RPAREN .)
+
+
+state 23
+
+    (7) index_expr -> index_tensor COMMA . index_expr
+    (6) index_expr -> . index_tensor
+    (7) index_expr -> . index_tensor COMMA index_expr
+    (8) index_tensor -> . ID
+
+    ID              shift and go to state 12
+
+    index_tensor                   shift and go to state 14
+    index_expr                     shift and go to state 29
+
+state 24
+
+    (9) expr -> expr PLUS expr .
+    (9) expr -> expr . PLUS expr
+    (10) expr -> expr . MINUS expr
+    (11) expr -> expr . TIMES expr
+    (12) expr -> expr . DIVIDE expr
+
+    PLUS            reduce using rule 9 (expr -> expr PLUS expr .)
+    MINUS           reduce using rule 9 (expr -> expr PLUS expr .)
+    $end            reduce using rule 9 (expr -> expr PLUS expr .)
+    RPAREN          reduce using rule 9 (expr -> expr PLUS expr .)
+    TIMES           shift and go to state 17
+    DIVIDE          shift and go to state 18
+
+  ! TIMES           [ reduce using rule 9 (expr -> expr PLUS expr .) ]
+  ! DIVIDE          [ reduce using rule 9 (expr -> expr PLUS expr .) ]
+  ! PLUS            [ shift and go to state 15 ]
+  ! MINUS           [ shift and go to state 16 ]
+
+
+state 25
+
+    (10) expr -> expr MINUS expr .
+    (9) expr -> expr . PLUS expr
+    (10) expr -> expr . MINUS expr
+    (11) expr -> expr . TIMES expr
+    (12) expr -> expr . DIVIDE expr
+
+    PLUS            reduce using rule 10 (expr -> expr MINUS expr .)
+    MINUS           reduce using rule 10 (expr -> expr MINUS expr .)
+    $end            reduce using rule 10 (expr -> expr MINUS expr .)
+    RPAREN          reduce using rule 10 (expr -> expr MINUS expr .)
+    TIMES           shift and go to state 17
+    DIVIDE          shift and go to state 18
+
+  ! TIMES           [ reduce using rule 10 (expr -> expr MINUS expr .) ]
+  ! DIVIDE          [ reduce using rule 10 (expr -> expr MINUS expr .) ]
+  ! PLUS            [ shift and go to state 15 ]
+  ! MINUS           [ shift and go to state 16 ]
+
+
+state 26
+
+    (11) expr -> expr TIMES expr .
+    (9) expr -> expr . PLUS expr
+    (10) expr -> expr . MINUS expr
+    (11) expr -> expr . TIMES expr
+    (12) expr -> expr . DIVIDE expr
+
+    PLUS            reduce using rule 11 (expr -> expr TIMES expr .)
+    MINUS           reduce using rule 11 (expr -> expr TIMES expr .)
+    TIMES           reduce using rule 11 (expr -> expr TIMES expr .)
+    DIVIDE          reduce using rule 11 (expr -> expr TIMES expr .)
+    $end            reduce using rule 11 (expr -> expr TIMES expr .)
+    RPAREN          reduce using rule 11 (expr -> expr TIMES expr .)
+
+  ! PLUS            [ shift and go to state 15 ]
+  ! MINUS           [ shift and go to state 16 ]
+  ! TIMES           [ shift and go to state 17 ]
+  ! DIVIDE          [ shift and go to state 18 ]
+
+
+state 27
+
+    (12) expr -> expr DIVIDE expr .
+    (9) expr -> expr . PLUS expr
+    (10) expr -> expr . MINUS expr
+    (11) expr -> expr . TIMES expr
+    (12) expr -> expr . DIVIDE expr
+
+    PLUS            reduce using rule 12 (expr -> expr DIVIDE expr .)
+    MINUS           reduce using rule 12 (expr -> expr DIVIDE expr .)
+    TIMES           reduce using rule 12 (expr -> expr DIVIDE expr .)
+    DIVIDE          reduce using rule 12 (expr -> expr DIVIDE expr .)
+    $end            reduce using rule 12 (expr -> expr DIVIDE expr .)
+    RPAREN          reduce using rule 12 (expr -> expr DIVIDE expr .)
+
+  ! PLUS            [ shift and go to state 15 ]
+  ! MINUS           [ shift and go to state 16 ]
+  ! TIMES           [ shift and go to state 17 ]
+  ! DIVIDE          [ shift and go to state 18 ]
+
+
+state 28
+
+    (13) expr -> LPAREN expr RPAREN .
+
+    PLUS            reduce using rule 13 (expr -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 13 (expr -> LPAREN expr RPAREN .)
+    TIMES           reduce using rule 13 (expr -> LPAREN expr RPAREN .)
+    DIVIDE          reduce using rule 13 (expr -> LPAREN expr RPAREN .)
+    $end            reduce using rule 13 (expr -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 13 (expr -> LPAREN expr RPAREN .)
+
+
+state 29
+
+    (7) index_expr -> index_tensor COMMA index_expr .
+
+    RPAREN          reduce using rule 7 (index_expr -> index_tensor COMMA index_expr .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 20 resolved using rule (uminusTensor -> MINUS tensor)
+WARNING: rejected rule (expr -> tensor) in state 20

@@ -1,0 +1,10 @@
+B(i,j) = A(i,j) + B(i,j)
+B(i,j) = A(i,j) + B(i,j)
+to(i,j) = to(i,j) + from(i,j)
+B(i,j) = A(i,j) + B(i,j)
+B(i,j) = A(i,j) + B(i,j)
+B(i, j) = A(i, j) + B(i, j)
+B(i,j) = B(i,j) + A(i,j)
+B(i,j) = A(i,j) + B(i,j)
+C[i, j] = A[i, j] + B[i, j]
+to(i,j) = to(i,j) + from(i,j)

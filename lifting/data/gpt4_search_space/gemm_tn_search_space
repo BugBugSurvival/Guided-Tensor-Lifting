@@ -1,0 +1,10 @@
+C(i,j) = C(i,j) + ALPHA * A(k,i) * B(k,j)
+C(i, j) += ALPHA * A(k, i) * B(k, j)
+C(i, j) = Alpha * A(k, i) * B(k, j) + C(i, j)
+C(i, j) = C(i, j) + ALPHA * A(k, i) * B(k, j)
+C(i,j) += A(k,i) * B(k,j) * ALPHA
+C(i,j) = ALPHA*A(k,i) * B(k,j) + C(i,j)
+C(i,j) = A(k,i) * B(k,j) * Alpha
+C(i,j) = C(i,j) + alpha * A(k,i) * B(k,j)
+C(i, j) = C(i, j) + ALPHA * A(k, i) * B(k, j)
+C(i, j) = C(i, j) + ALPHA * A(k, i) * B(k, j)
