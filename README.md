@@ -160,7 +160,6 @@ Inside the project directory 📂 `Guided-Tensor-Lifting`, clone and build the *
 git clone https://github.com/tensor-compiler/taco
 cd taco && mkdir -p build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON=ON .. && make -j$(nproc)
-make install
 ```
 
 ### **6️⃣ Build Code Analyses**
