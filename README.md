@@ -171,7 +171,7 @@ After that, install the Python dependencies needed by MLIR:
 ```bash
 python -m pip install -r deps/llvm-project/mlir/python/requirements.txt
 pip install clang==17.0.6
-pip libclang==17.0.6
+pip install libclang==17.0.6
 ```
 
 ---
