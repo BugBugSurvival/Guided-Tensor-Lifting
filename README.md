@@ -70,6 +70,7 @@ python3 run.py --grammar_style wcfg --benchmark len --timeout 3600 --enumerator 
 ```
 🎯 **Results** are stored in 📂 `Guided-Tensor-Lifting/lifting/data/lifting_logs/`. 
 
+
 #### **📌 Command-Line Arguments**
 ##### **📝 `--grammar_style <arg1>`**
 Defines the grammar to be used:
@@ -94,6 +95,23 @@ Check LLM solutions:
 - `true`  - Validate LLM solutions only. Though `--enumerator <arg4>` is required, it will not be used.
 - `false` - Directly enumerate solutions base on the pCFG.
 
+### **⚡  Running Script**
+
+To run a specific approach, navigate to 📂 `Guided-Tensor-Lifting/lifting` use:
+```sh
+./run_td_wcfg.sh  # Example: Running top-down enumerator with a WCFG that has diffused weights
+```
+
+📜 List of Execution Scripts under 📂 `Guided-Tensor-Lifting/lifting`:
+- **`run.sh`** -  Runs the following `.sh` scripts.
+- **`run_bu_equal.sh`** - Runs the bottom-up enumerator with a WCFG that has equal probabilities.
+- **`run_bu_full.sh`**  -  Runs the bottom-up enumerator with a WCFG that includes all production rules.
+- **`run_bu_orig.sh`**  -  Runs the bottom-up enumerator using only LLM-generated production rules.
+- **`run_bu_wcfg.sh`**  -  Runs the bottom-up enumerator with a WCFG that has diffused weights.
+- **`run_td_equal.sh`** -  Runs the top-down enumerator with a WCFG that has equal probabilities.
+- **`run_td_full.sh`**  -  Runs the top-down enumerator with a WCFG that includes all production rules.
+- **`run_td_orig.sh`**  -  Runs the top-down enumerator using only LLM-generated production rules.
+- **`run_td_wcfg.sh`**  -  Runs the top-down enumerator with a WCFG that has diffused weights.
 
 
 ---
@@ -195,6 +213,51 @@ python3 run.py --grammar_style wcfg --benchmark len --timeout 3600 --enumerator 
 
 🎯 **Results** are stored in 📂 `Guided-Tensor-Lifting/lifting/data/lifting_logs/`. 
 
+
+#### **📌 Command-Line Arguments**
+##### **📝 `--grammar_style <arg1>`**
+Defines the grammar to be used:
+- `wcfg`         - Weighted Context-Free Grammar with diffused weights.
+- `wcfg_equal_p` - Weighted Context-Free Grammar with equal probabilities.
+- `full_grammar` - Contains all production rules.
+- `original`     - Only includes LLM-generated production rules.
+
+##### **📝 `--benchmark <arg2>`**
+- Name of the benchmark located in `lifting/data/benchmarks/`.
+
+##### **📝 `--timeout <arg3>`**
+- Sets the timeout duration (in seconds).
+
+##### **📝 `--enumerator <arg4>`**
+Enumeration strategy:
+- `top_down`
+- `bottom_up`
+
+##### **📝 `--check_llm <arg5>`**
+Check LLM solutions:
+- `true`  - Validate LLM solutions only. Though `--enumerator <arg4>` is required, it will not be used.
+- `false` - Directly enumerate solutions base on the pCFG.
+
+### **⚡ Running Script**
+
+To run a specific approach, navigate to 📂 `Guided-Tensor-Lifting/lifting` use:
+```sh
+./run_td_wcfg.sh  # Example: Running top-down enumerator with a WCFG that has diffused weights
+```
+
+📜 List of Execution Scripts under 📂 `Guided-Tensor-Lifting/lifting`:
+- **`run.sh`** -  Runs the following `.sh` scripts.
+- **`run_bu_equal.sh`** - Runs the bottom-up enumerator with a WCFG that has equal probabilities.
+- **`run_bu_full.sh`**  -  Runs the bottom-up enumerator with a WCFG that includes all production rules.
+- **`run_bu_orig.sh`**  -  Runs the bottom-up enumerator using only LLM-generated production rules.
+- **`run_bu_wcfg.sh`**  -  Runs the bottom-up enumerator with a WCFG that has diffused weights.
+- **`run_td_equal.sh`** -  Runs the top-down enumerator with a WCFG that has equal probabilities.
+- **`run_td_full.sh`**  -  Runs the top-down enumerator with a WCFG that includes all production rules.
+- **`run_td_orig.sh`**  -  Runs the top-down enumerator using only LLM-generated production rules.
+- **`run_td_wcfg.sh`**  -  Runs the top-down enumerator with a WCFG that has diffused weights.
+
+
+
 ---
 
 ## **✅ Why Use STAGG?**
@@ -202,5 +265,7 @@ python3 run.py --grammar_style wcfg --benchmark len --timeout 3600 --enumerator 
 - 📈 **Combines LLMs & heuristics**: Uses probabilistic grammars for accurate translations.
 - 🚀 **Scales efficiently**: Reduces enumeration search space significantly.
 - 🔍 **Ensures correctness**: Uses **bounded model checking** for verification.
+
+
 
 
