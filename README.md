@@ -175,9 +175,6 @@ Ensure dependencies are installed:
 ```bash
 sudo apt install ninja-build bison flex libtool jq lld libgmp3-dev build-essential libboost-all-dev default-jdk maven -y
 ```
-```bash
-chmod +x <PATH-TO-Guided-Tensor-Lifting>/cbmc-validation/deps/cvc5/build/bin/cvc5
-```
 Navigate to 📂 `Guided-Tensor-Lifting/cbmc-validation`, build dependencies:
 
 ```bash
