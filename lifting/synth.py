@@ -234,7 +234,7 @@ class Synthesizer:
             return 0 if analysis == 'ProgramLength' else []
 
 
-    def convert_grammar_limit_tensors(self, include_constants, grammar):
+    def convert_grammar_limit_tensors(self, grammar):
         """
         Post-process the grammar to limit the number of single-letter tensors included.
         If the grammar contains 'Cons', keep only one single-letter tensor; otherwise
@@ -246,20 +246,21 @@ class Synthesizer:
         Returns:
             dict: Updated grammar with limited single-letter tensors.
         """
-        updated_grammar = [{'Tensor': {}, 'Op': grammar[0]['Op'].copy()}, grammar[1], grammar[2]]
-        print(updated_grammar)
+        updated_grammar = {'Tensor': {}, 'Op': grammar['Op'].copy()}
+
         # Step 1: Identify single-letter tensors
         single_letter_tensors = []
+        has_cons = 'Cons' in grammar['Tensor']
         
         # Copy the non-single-letter tensors and single-letter tensors
-        for key, value in grammar[0]['Tensor'].items():
+        for key, value in grammar['Tensor'].items():
             if isinstance(key, str) and len(key) == 1:  # Single-letter tensors
                 single_letter_tensors.append((key, value))
             else:
-                updated_grammar[0]['Tensor'][key] = value  # Keep non-single-letter tensors
+                updated_grammar['Tensor'][key] = value  # Keep non-single-letter tensors
 
         # Step 2: Apply the constraint based on the presence of 'Cons'
-        if include_constants:
+        if has_cons:
             # Keep only one single-letter tensor if 'Cons' exists
             single_letter_tensors = single_letter_tensors[:1]
         elif len(single_letter_tensors) > 2:
@@ -268,9 +269,10 @@ class Synthesizer:
 
         # Add the selected single-letter tensors back to the updated grammar
         for key, value in single_letter_tensors:
-            updated_grammar[0]['Tensor'][key] = value
+            updated_grammar['Tensor'][key] = value
 
         return updated_grammar
+
 
     def check_multiple_letter_tensors(self, nn_wcfg):
         """
@@ -309,32 +311,27 @@ class Synthesizer:
                 return True
         return False
     
-    def transform_nn_wcfg(self, nn_wcfg):
-        """
-        Generic transformer for nn_wcfg:
-        1) Groups multi-character prefix keys that differ only by case into a single entry.
-        2) Sorts single-character keys.
-        3) Uses dimension_list[1:] to decide where to insert each multi-character group.
-        4) Renames prefixes from 'b' onward in the final ordering.
-        """
 
+    def transform_nn_wcfg(self, nn_wcfg):
         grammar_part = nn_wcfg[0]
         tensor_dict = grammar_part['Tensor']
         dimension_list = nn_wcfg[2]
         insertion_indices = dimension_list[1:] if len(dimension_list) > 1 else []
         group_map = defaultdict(lambda: {'canonical_prefix': None, 'sum': 0, 'keys': []})
-        single_char_map = {}  # single-char keys remain as is, e.g. "b(i,j)"
+        single_char_map = {}
 
         def split_prefix_suffix(key):
-            """Return prefix, suffix. If there's parentheses, prefix is before '('."""
             if '(' in key and key.endswith(')'):
                 idx = key.index('(')
-                return key[:idx], key[idx:]  # prefix, suffix (like '(i,j)')
+                return key[:idx], key[idx:]
             else:
                 return key, ''
 
         for k, val in tensor_dict.items():
             prefix, _suffix = split_prefix_suffix(k)
+            if prefix.startswith('-'):
+                single_char_map[k] = val
+                continue
             if len(prefix) > 1:
                 lower = prefix.lower()
                 group_map[lower]['sum'] += val
@@ -343,13 +340,15 @@ class Synthesizer:
                     group_map[lower]['canonical_prefix'] = prefix.upper()
             else:
                 single_char_map[k] = val
+
         multi_char_entries = []
-        for lower_prefix, info in group_map.items():
+        for _, info in group_map.items():
             cprefix = info['canonical_prefix']
             total_val = info['sum']
             multi_char_entries.append((cprefix, total_val))
+
         sorted_single_keys = sorted(single_char_map.keys())
-        final_order = list(sorted_single_keys) 
+        final_order = list(sorted_single_keys)
         multi_char_entries.sort(key=lambda x: x[0])
 
         for idx, (cprefix, total_val) in enumerate(multi_char_entries):
@@ -362,22 +361,21 @@ class Synthesizer:
                 final_order.insert(insertion_index, cprefix)
             else:
                 final_order.append(cprefix)
+
         final_dict_in_order = []
         used_multi_char = set(x[0] for x in multi_char_entries)
-        single_char_set = set(single_char_map.keys())  # to speed membership checks
+        single_char_set = set(single_char_map.keys())
 
         for order_item in final_order:
             if order_item in single_char_set:
                 val = single_char_map[order_item]
                 final_dict_in_order.append((order_item, val))
             elif order_item in used_multi_char:
-
                 for (mprefix, mval) in multi_char_entries:
                     if mprefix == order_item:
                         final_dict_in_order.append((order_item, mval))
                         break
-            else:
-                pass
+
         prefix_map = {}
         next_letter_ord = ord('b')
         final_tensor = {}
@@ -387,11 +385,14 @@ class Synthesizer:
             if pfx not in prefix_map:
                 prefix_map[pfx] = chr(next_letter_ord)
                 next_letter_ord += 1
-
             new_key = prefix_map[pfx] + sfx
+            if pfx.startswith('-'):
+                new_key = orig_key
             final_tensor[new_key] = val
+
         grammar_part['Tensor'] = final_tensor
-        return nn_wcfg  
+        return nn_wcfg
+
 
     def synthesize(self, benchmark, nn_solution, grammar_style, enumerator, pre_check=False):
         """
@@ -447,6 +448,8 @@ class Synthesizer:
         print(f'LLM grammar: {nn_wcfg}')
         include_constants == self.check_cons_tensors(nn_wcfg)
         nn_wcfg = self.transform_nn_wcfg(nn_wcfg)
+        print(f'LLM grammar: {nn_wcfg}')
+
         # nn_wcfg = self.convert_grammar_limit_tensors(include_constants, nn_wcfg)
         if len(orders) != len(nn_wcfg[2]) and len(orders) != 2 or grammar_style == 'original':
             orders = nn_wcfg[2]
@@ -465,6 +468,10 @@ class Synthesizer:
             for item in updated_grammar[key]:
                 if updated_grammar[key][item] == 0:
                     updated_grammar[key][item] = 1
+        print(f'updated_grammar:{updated_grammar}')
+
+        updated_grammar = self.convert_grammar_limit_tensors(updated_grammar)
+
         print(f'updated_grammar:{updated_grammar}')
         solution = Candidate('', '')
         if enumerator == 'top_down':
