@@ -1,0 +1,10 @@
+"C(i,j) = alpha * A(i,k) * B(k,j) + beta * C(i,j)"
+"C(i,j) = C(i,j) * beta + alpha * A(i,k) * B(k,j)"
+"C(i,j) = alpha * A(i,k) * B(k,j) + C(i,j) * beta
+"C(i,j) = beta * C(i,j) + alpha * A(i,k) * B(k,j)"
+"C(i,j) = alpha * A(i,k) * B(k,j), C(i,j) = C(i,j) + beta * C(i,j)"
+"C(i,j) = beta * C(i,j), C(i,j) = alpha * A(i,k) * B(k,j) + C(i,j)"
+"C(i,j) = alpha * A(i,k) * B(k,j) + beta * C(i,j)"
+"C(i,j) = C(i,j) * beta, C(i,j) = C(i,j) + alpha * A(i,k) * B(k,j)"
+"C(i,j) = alpha * A(i,k) * B(k,j), C(i,j) = C(i,j) * beta"
+"C(i,j) = beta * C(i,j), C(i,j) = C(i,j) + alpha * A(i,k) * B(k,j)"

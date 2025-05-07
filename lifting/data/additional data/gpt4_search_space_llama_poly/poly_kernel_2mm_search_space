@@ -1,0 +1,11 @@
+tmp(i,j) = sum(k, alpha * A(i,k) * B(k,j))
+tmp(i,j) = alpha * A(i,k) * B(k,j) + tmp(i,j)
+D(i,j) = beta * D(i,j) + sum(k, tmp(i,k) * C(k,j)) 
+D(i,j) = beta * D(i,j) + tmp(i,k) * C(k,j)
+D(i,j) *= beta + sum(k, tmp(i,k) * C(k,j))
+D(i,j) *= beta; D(i,j) += tmp(i,k) * C(k,j)
+D(i,j) = D(i,j) * beta + sum(k, tmp(i,k) * C(k,j))
+tmp(i,j) += alpha * A(i,k) * B(k,j)
+D(i,j) = beta * D(i,j) + sum(k, tmp(i,k) * C(k,j))
+D(i,j) = beta * D(i,j); D(i,j) += sum(k, tmp(i,k) * C(k,j))
+

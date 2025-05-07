@@ -1,0 +1,10 @@
+A(i) = B(i,j) * C(j)
+Output(i) = Weight(i,j) * Input(j)
+a(i) = b(i,j) * c(j)
+O(i) = W(i,j) * I(j)
+out(i) = w(i,j) * in(j)
+y(i) = x(i,j) * z(j)
+res(i) = mat(i,j) * vec(j)
+result(i) = matrix(i,j) * vector(j)
+dst(i) = src1(i,j) * src2(j)
+o(i) = m(i,j) * v(j)]

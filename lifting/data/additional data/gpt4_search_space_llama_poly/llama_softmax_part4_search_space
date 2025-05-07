@@ -1,0 +1,10 @@
+A(i) = B(i) / c
+result(i) = temp(i) / sum
+output(i) = unnormalized(i) / denominator
+out(i) = unnorm(i) / total
+y(i) = x(i) / s
+o(i) = u(i) / v
+p(i) = t(i) / r
+outVec(i) = inVec(i) / denominator
+tensorOut(i) = tensorIn(i) / constant
+final(i) = initial(i) / constantSum

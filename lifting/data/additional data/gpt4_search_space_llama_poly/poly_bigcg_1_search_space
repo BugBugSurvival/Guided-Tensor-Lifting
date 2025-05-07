@@ -1,0 +1,10 @@
+s(j) = 0 
+s(j) = s(j) + r(i) * A(i,j) 
+s(i) = s(i) + r(i) * A(i,j) 
+s(j) = s(j) + r(i) * A(j,i) 
+s(j) = s(j) + r(j) * A(i,j) 
+s(j) = s(i) + r(j) * A(i,j) 
+s(j) = r(i) * A(i,j) + s(j) 
+s(i) = s(i) + r(i) * A(j,i) 
+s(j) = r(i) * A(i,j) + s(i)
+s(i) = r(i) * A(i,j) + s(j)]

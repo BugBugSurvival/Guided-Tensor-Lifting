@@ -1,0 +1,10 @@
+output(i) = input(i) - max_val 
+output(i) := input(i) - max_val 
+output(i) = input(i) + (-max_val) 
+output(i) := input(i) + (-max_val) 
+output(i) = -(max_val - input(i)) 
+output(i) := -(max_val - input(i)) 
+output(i) = input(i) ※ -max_val 
+output(i) = -max_val + input(i) 
+output(i) := -max_val + input(i) 
+output(i) = input[i] - max_val

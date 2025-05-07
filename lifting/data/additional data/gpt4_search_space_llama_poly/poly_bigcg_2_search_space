@@ -1,0 +1,10 @@
+q(i) = A(i,j) * p(j), 
+q(i) = q(i) + A(i,j) * p(j),
+q(i) += A(i,j) * p(j),
+A(i,j) * p(j) -> q(i),
+q(i) = reduce(+, j, A(i,j) * p(j)),
+q(i) = sum(A(i,j) * p(j), j),
+q(i) = sum(j, A(i,j) * p(j)),
+q(i) := A(i,j) * p(j),
+q(i) := q(i) + A(i, j) * p(j),
+q(i) += sum(j, A(i, j) * p(j))

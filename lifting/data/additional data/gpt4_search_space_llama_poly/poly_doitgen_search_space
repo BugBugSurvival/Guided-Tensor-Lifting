@@ -1,0 +1,10 @@
+sum(r,q,p) = sum(sum(r,q,p) + A(r,q,s) * C4(s,p))
+sum(r,q,p) = sum(sum[r][q][p] + A[r][q][s] * C4[s][p])
+sum(r,q,p) = sum(i=0 to _PB_NR) (sum(i, q, p) + A(i, q, s) * C4(s, p))
+sum(r,q,p) = sum(r,q,p) plus A(r,q,s) * C4(s,p)
+sum(r,q,p) = sum(i=0 to _PB_NR) (sum(i, j, k) + A(i, j, s) * C4(s, p))
+sum(r,q,p) = sum[i=0 to _PB_NR,i=0 to _PB_NQ, i=0 to _PB_NP] (sum[i][j][k] + A[i][j][s] * C4[s][p]) 
+sum(r,q,p) = sum(i=0 to _PB_NR,j=0 to _PB_NQ, k=0 to _PB_NP) (sum[i][j][k] + A[i][j][s] * C4[s][p])
+sum(r,q,p) = sum(c1,c2,c3) where c1=0..PB_NR, c2=0..PB_NQ, c3=0..PB_NP (sum[c1][c2][c3] + A[c1][c2][s] * C4[s][p])
+sum[r][q][p] = sum(sum[r][q][p] + A[r][q][s] * C4[s][p])
+sum[r][q][p] = sum[i=0 to _PB_NR,i=0 to _PB_NQ, i=0 to _PB_NP] (sum[i][j][k] + A[i][j][s] * C4[s][p])]
