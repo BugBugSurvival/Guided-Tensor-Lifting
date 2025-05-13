@@ -14,12 +14,20 @@ void print_array(const char* name, int* arr, int len){
   printf("\n");
 }
 
+void print_matrix(const char* name, int **m, int rows, int cols){
+  printf("%s: %d: ", name, rows*cols);
+  for(int r = 0; r < rows; ++r)
+    for(int c = 0; c < cols; ++c)
+      printf("%d ", m[r][c]);
+  printf("\n");
+}
+
+
 typedef struct{
   int rows;
   int cols;
   int** vals;
 }matrix;
-
 
 matrix* allocate_darknet_matrix(int rows, int cols){
   matrix* m = (matrix*)malloc(sizeof(matrix));
@@ -33,26 +41,20 @@ matrix* allocate_darknet_matrix(int rows, int cols){
 }
 
 void fill_darknet_matrix(matrix* m){
-  for(int i = 0; i < m->rows; i++){
+  for(int i = 0; i < m->rows; i++)
     fill_array(m->vals[i], m->cols);
-  }
 }
 
 void print_darknet_matrix(const char* name, matrix m){
   printf("%s: %d: ", name, m.rows * m.cols);
-  for(int i = 0; i < m.rows; i++){
-    for(int j = 0; j< m.cols; j++){
+  for(int i = 0; i < m.rows; i++)
+    for(int j = 0; j< m.cols; j++)
       printf("%d ", m.vals[i][j]);
-    }
-  }
   printf("\n");
 }
 
 void copy_darknet_matrix(matrix* from, matrix* to){
-  for(int i = 0; i < from->rows; i++){
-    for(int j = 0; j< from->cols; j++){
+  for(int i = 0; i < from->rows; i++)
+    for(int j = 0; j< from->cols; j++)
       to->vals[i][j] = from->vals[i][j];
-    }
-  }
 }
-
