@@ -1,103 +1,92 @@
+
+from __future__ import annotations
+
 import argparse
-import copy
 import json
-import os
 import subprocess
+from pathlib import Path
+
 from create_driver import gen_driver
 
 
-def create_io_file(benchmark_path):
-    benchmark = os.path.basename(benchmark_path)[:-2]
-    benchmark_dir = os.path.dirname(benchmark_path)
+def _to_path(path_str: str) -> Path:
+    p = Path(path_str).expanduser().resolve()
+    if not p.exists():
+        raise FileNotFoundError(p)
+    return p
 
+
+def _create_io_json(tmp_file: Path, io_json: Path):
+    """Parse the `*_iotemp` printout into structured JSON."""
     io_pairs = []
-    io_dict = {"input": {}, "output": {}}
-    try:
-        with open(os.path.join(benchmark_dir, f"{benchmark}_iotemp"), "r") as f:
-            for line in f:
-                l = line.rstrip()
+    cur: dict[str, dict[str, tuple[str, str]]] = {"input": {}, "output": {}}
+    section: str | None = None
 
-                if l.startswith("sample"):
-                    io_pairs.append(copy.deepcopy(io_dict))
-                    io_dict = {"input": {}, "output": {}}
-                    continue
+    with tmp_file.open() as fp:
+        for raw in fp:
+            line = raw.rstrip()
+            if line == "input":
+                section = "input"
+                continue
+            if line == "output":
+                section = "output"
+                continue
+            if line.startswith("sample_id"):
+                io_pairs.append(cur)
+                cur = {"input": {}, "output": {}}
+                section = None
+                continue
 
-                if l in ("input", "output"):
-                    key = l
-                    continue
+            # var: dim: values (values can legally contain colons, so split max 2)
+            var, dim, values = line.split(":", 2)
+            cur[section][var.strip()] = (dim.strip(), values.strip())
 
-                parts = l.split(":")
-                var, dim = parts[0].strip(), parts[1].strip()
-                values = ":".join(parts[2:]).strip()
+    with io_json.open("w") as fp:
+        json.dump(io_pairs, fp, indent=2)
 
-                io_dict[key][var] = (dim, values)
-
-        os.remove(os.path.join(benchmark_dir, f"{benchmark}_iotemp"))
-    except FileNotFoundError as e:
-        print("Could not open temporary io file")
-        raise e
-
-    with open(os.path.join(benchmark_dir, f"{benchmark}_io.json"), "w") as out:
-        json.dump(io_pairs, out, indent=2)
+    tmp_file.unlink(missing_ok=True)
 
 
-def run_benchmark(benchmark_path, n_inputs):
-    benchmark_dir = os.path.dirname(benchmark_path)
-    benchmark = os.path.basename(benchmark_path)[:-2]
-    driver_path = os.path.join(benchmark_dir, f"main_{benchmark}.c")
 
-    try:
-        subprocess.run(
-            ["gcc", "-O3", driver_path, benchmark_path, "io_gen.c", "-o", os.path.join(benchmark_dir, f"{benchmark}.out")],
-            check=True,
-        )
-    except subprocess.CalledProcessError as e:
-        print("Could not compile benchmark")
-        raise e
+def run_pipeline(benchmark: Path, vprofile: Path, n: int, outvar: str | None):
+    bench_dir = benchmark.parent
+    bench_name = benchmark.stem
 
-    try:
-        subprocess.run(
-            [os.path.join(benchmark_dir, f"{benchmark}.out"), str(n_inputs)],
-            check=True,
-            stdout=open(os.path.join(benchmark_dir, f"{benchmark}_iotemp"), "w"),
-        )
-        os.remove(os.path.join(benchmark_dir, f"{benchmark}.out"))
-    except subprocess.CalledProcessError as e:
-        print("Could not run benchmark")
-        raise e
+    # 1. generate driver
+    gen_driver(str(benchmark), outvar, str(vprofile))
+
+    driver = bench_dir / f"main_{bench_name}.c"
+    exe    = bench_dir / f"{bench_name}.out"
+    tmp_io = bench_dir / f"{bench_name}_iotemp"
+    io_json= bench_dir / f"{bench_name}_io.json"
+
+    # 2. compile
+    subprocess.run([
+        "gcc", "-O3", driver, benchmark, "io_gen.c", "-o", exe
+    ], check=True)
+
+    # 3. run
+    with tmp_io.open("w") as fout:
+        subprocess.run([exe, str(n)], stdout=fout, check=True)
+
+    exe.unlink(missing_ok=True)
+
+    # 4. parse to JSON
+    _create_io_json(tmp_io, io_json)
 
 
-def io_gen():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-b", "--benchmark", required=True, help="Path to the program to be lifted")
-    parser.add_argument("-vp", "--valueprofile", required=True, help="Path to value profile file")
-    parser.add_argument("-n", "--ninputs", type=int, required=True, help="Number of IO samples to be generated")
-    parser.add_argument(
-        "-ov",
-        "--outvar",
-        help="Variable that corresponds to the output. It does not need to be given in case the function is returning the output",
-    )
-    args = parser.parse_args()
 
-    if not os.path.isfile(args.benchmark):
-        raise FileNotFoundError(f"Could not find {args.benchmark}")
-    if not os.path.isfile(args.valueprofile):
-        raise FileNotFoundError(f"Could not find {args.valueprofile}")
-    if args.ninputs <= 0:
-        raise ValueError("Please provide a valid (>0) number of desired IO samples")
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-b", "--benchmark", required=True, help="kernel .c path")
+    ap.add_argument("-vp", "--valueprofile", required=True, help="value‑profile JSON")
+    ap.add_argument("-n", "--ninputs", type=int, required=True, help="#I/O pairs")
+    ap.add_argument("-ov", "--outvar", help="name of output variable (void kernels)")
+    args = ap.parse_args()
 
-    benchmark_path = os.path.abspath(args.benchmark)
-    value_profile_file = os.path.abspath(args.valueprofile)
-
-    print("-" * 7, f"Generating driver for {benchmark_path}", "-" * 7)
-    gen_driver(benchmark_path, args.outvar, value_profile_file)
-
-    print("-" * 7, f"Compiling and running {benchmark_path}", "-" * 7)
-    run_benchmark(benchmark_path, args.ninputs)
-
-    print("-" * 7, f"Generating IO file for {benchmark_path}", "-" * 7)
-    create_io_file(benchmark_path)
+    run_pipeline(_to_path(args.benchmark), _to_path(args.valueprofile), args.ninputs, args.outvar)
 
 
 if __name__ == "__main__":
-    io_gen()
+    main()
+
